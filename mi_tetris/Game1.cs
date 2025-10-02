@@ -13,6 +13,7 @@ namespace mi_tetris
         private SpriteBatch _spriteBatch;
         private KeyboardState _current;
         private KeyboardState _prev;
+        private SpriteFont _fuente;
 
         private Texture2D _happy_texture;
         private Texture2D _0o0_texture;
@@ -91,15 +92,13 @@ namespace mi_tetris
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            h_an = 700;
-            w_an = (h_an * 16) / 9;
-            _graphics.PreferredBackBufferHeight = h_an;
-            _graphics.PreferredBackBufferWidth = w_an;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            redim(720);
+            Window.Title = "ACOMODA Y DEJA CAER";
+            
             buttons = new List<Buttons>();
             boton = new Buttons();
             savin_butons = false;
@@ -163,6 +162,7 @@ namespace mi_tetris
             _0o0_texture = Content.Load<Texture2D>("0o0");
             _wall_texture = Content.Load<Texture2D>("Brick_Block");
             _duda_texture = Content.Load<Texture2D>("duda");
+            _fuente = Content.Load<SpriteFont>("fuente");
         }
 
         protected override void Update(GameTime gameTime)
@@ -279,9 +279,25 @@ namespace mi_tetris
                     }
                 }
             }
+            string texto = "Creado por David Valdes Hernandez.(Aun en proceso)";
+            float t_scale = (GraphicsDevice.Viewport.Width * 0.4f) / _fuente.MeasureString(texto).X;
+            _spriteBatch.DrawString(_fuente, texto, new Vector2(10f / 5f, 10f / 5f), new Color(10f / 255f, 10f / 255f, 102f / 255f), 0f, Vector2.Zero, t_scale, SpriteEffects.None, 1f);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void redim(int H)
+        {
+            int W = (H * 16) / 9;
+            _graphics.PreferredBackBufferHeight = H;
+            _graphics.PreferredBackBufferWidth = W;
+            //_graphics.ApplyChanges();
+            //_graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.ApplyChanges();
         }
 
         private void move()
